@@ -3,7 +3,7 @@ import gramatica_regular
 class AutomatoFinito:
 	estados = set()
 	transicoes = {}
-	inicial =  ''
+	inicial = ''
 	finais = set()
 	nome = ''
 

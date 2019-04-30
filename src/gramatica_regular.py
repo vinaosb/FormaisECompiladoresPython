@@ -3,9 +3,9 @@ import automato_finito
 class GramaticaRegular:
 	variaveis = set()
 	transicoes = {}
-	inicial: ''
+	inicial : ''
 
-	def __init__(self, nome = ''):
+	def __init__(self, nome=''):
 		self.variaveis = set()
 		self.transicoes = {}
 		self.inicial = ''
@@ -39,7 +39,7 @@ class GramaticaRegular:
 			
 				for prod in self.transicoes[v]:
 					if prod[1] != '&':
-						saida = saida + prod[0] + '(' +prod[1] + ') | '
+						saida = saida + prod[0] + '(' + prod[1] + ') | '
 					else:
 						saida = saida + prod[0] + ' | '
 				saida = saida[:-2] + '\n'
@@ -68,7 +68,7 @@ class GramaticaRegular:
 					else:
 						af.transicoes[(v, e[0])] = [final]
 				else:
-					if (v, e[0]) in  af.transicoes.keys():
+					if (v, e[0]) in af.transicoes.keys():
 						af.transicoes[(v, e[0])].append(e[1])
 					else:
 						af.transicoes[(v, e[0])] = [e[1]]
