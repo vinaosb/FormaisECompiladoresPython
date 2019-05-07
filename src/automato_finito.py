@@ -74,16 +74,6 @@ class AutomatoFinito:
 		else:
 			return False
 
-# retorna o conjunto de caracteres que compõe o alfabeto do automato
-	def alfabeto(self):
-		lista = set()
-		count = 0
-		for x in self.transicoes.keys():
-			lista = lista.union(set(x[1]))
-			count = count + 1
-		lista = lista - set('&')
-		return lista
-
 
 # imprime a tabela de transicoes do automato
 	def print(self):

@@ -1,6 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src"
   ],
+  "SelectedNode": "\\src\\gramatica_regular.py",
   "PreviewInSolutionExplorer": false
 }
