@@ -9,6 +9,9 @@ class ExpressaoRegular:
     def concatenar(self, expressao):                
         self.expr = self.expr[:-1] + expressao + '#'
 
+    def nomear(self, nome):                
+        self.nome = nome
+
     def print(self):
         saida = '' + self.expr[:-1]
         saida += '\n'

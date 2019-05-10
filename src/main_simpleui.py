@@ -55,6 +55,7 @@ ui = sg.Window(' Trabalho Formais by Bruno e Vinicius - 2019.1 ')
 while True:
     event, values = ui.Layout(layout).Read() 
 
+    print(expressoes)
     # --- Process buttons --- #
     if event is None or event == 'Sair':
         break
@@ -62,9 +63,8 @@ while True:
         sg.Popup('Primeira entrega  AF ER GR - 2019.1 - ')
         continue
     elif event == 'submitE':
-       print( values['_ER_'] + ':' )
-       exr = expressao_regular.ExpressaoRegular(values['_ER_'],  )
-       exr.print()
+       exr = expressao_regular.ExpressaoRegular( values['_ER_'] + '#' )
+       print(exr.print())
        expressoes.append(exr)
        continue
     elif event == 'submitG':
@@ -79,11 +79,13 @@ while True:
         #automatos  = crud.Crud.load_automatos()
         continue
     elif event == 'Save':
-          ##
+          ## 
           crud.Crud.save_expressoes(expressoes)
           #crud.Crud.save_gramaticas(gramaticas)
           #crud.Crud.save_automatos(automatos) 
           continue
+   
+  
 
          
 # valores recebidos como dicionario

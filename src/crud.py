@@ -31,6 +31,7 @@ class Crud:
         for e in expressoes:
             file_object.write(e.nome)
             file_object.write(e.expr)
+            file_object.write('\n')
 
 
     def load_automatos():
@@ -86,4 +87,4 @@ class Crud:
             else:
                 exp.expr = lines[i]
                 ret.append(exp)
-        return ret
+                return ret
