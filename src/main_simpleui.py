@@ -21,16 +21,16 @@ for i in range(MAX_ROWS):
 menu_def = [['Info', 'Sobre...'],]
 
 tab1_layout = [ [sg.Text('ER', text_color='white', background_color='gray'), sg.Input(do_not_clear=True, key='_ER_')],
-        [sg.ReadFormButton('SubmitER', button_color=('gray34','azure2'), key='submit')],
+        [sg.ReadFormButton('SubmitER', button_color=('gray34','azure2'), key='submitE')],
         [sg.Text('GR', text_color='white', background_color='gray'), sg.Multiline( size=(42, 11), key='_GR_')],
-        [sg.ReadFormButton('SubmitGR', button_color=('gray34','azure2'), key='submit')],
+        [sg.ReadFormButton('SubmitGR', button_color=('gray34','azure2'), key='submitG')],
 
                 
         [sg.Text('AF', text_color='white', background_color='gray'), sg.Text('Digite linha , coluna:', text_color='white', background_color='gray'),        
             sg.In(key='inROW', justification='right', size=(8,1), pad=(1,1), do_not_clear=True),
             sg.In(key='inCOL', size=(8,1), pad=(1,1), justification='right', do_not_clear=True)],
         [sg.Column(columm_layout, size=(604,212),  key='_AF_', scrollable=True)],
-        [sg.ReadFormButton('SubmitAF', button_color=('gray34','azure2'))] ]
+        [sg.ReadFormButton('SubmitAF', button_color=('gray34','azure2'), key='submitA')] ]
 
 tab2_layout = [ [sg.T('Carregar ER, AF, GR')],
               [sg.Button('Open')],
@@ -56,12 +56,19 @@ while True:
         break
     elif event == 'Sobre...':
         sg.Popup('Primeira entrega  AF ER GR - 2019.1 - ')
+    elif event == 'submitE':
+       exr =  expressao_regular( values['_ER_'] )
+       print( values['_ER_'] )
+    elif event == 'submitG':
+       gra =  gramatica_regular( values['_GR_'] )
+       print( values['_GR_' ] )
     elif event == 'Open':
             ##
         expressoes = crud.load_expressoes()
     elif event == 'Save':
         ##
-         ext = expressao_regular()
+          
+         continue
 
          
 # valores recebidos como dicionario
