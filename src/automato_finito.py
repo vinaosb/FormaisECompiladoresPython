@@ -121,7 +121,7 @@ class AutomatoFinito:
 # funcao que retorna um afd a partir de um automato finito
 # se o automato ja estiver determinizado não haverá mudancas
 # recebe como parametro 0 e {} inicialmente
-	def to_afd(self, count, novos):
+	def to_afd(self, count = 0, novos = {}):
 		repetir = False
 		afd = AutomatoFinito()
 		for e in self.estados:
