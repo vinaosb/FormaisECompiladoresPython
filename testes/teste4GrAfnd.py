@@ -20,6 +20,6 @@ gr.set_variavel_inicial('S')
 
 print(gr.print())
 print('GR convertida para afnd: \n')
-print(gr.to_afnd().print()) #### erro nao possui alfabeto
+print(gr.to_afnd().print())
 
 
