@@ -2,6 +2,8 @@
 ## Alunos: Bruno George de Moraes
 ##         Vinícius Schwinden Berkenbrock
 ##
+import sys
+sys.path.insert(0, '../src/')
 
 import automato_finito
 

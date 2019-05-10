@@ -20,36 +20,32 @@ expressoes = []
 gramaticas = []
 automatos  = []
 
-columm_layout = [[]]
-MAX_ROWS = 8  # todo input value
-MAX_COL = 7   # input
-for i in range(MAX_ROWS):
-   inputs = [sg.T('{}'.format(i), size=(4,1), justification='right')] + [sg.In(size=(10, 1), pad=(1, 1), justification='right', key=(i,j), do_not_clear=True) for j in range(MAX_COL)]
-   columm_layout.append(inputs)
-
 
 menu_def = [['Info', 'Sobre...'],]
 
-tab1_layout = [ [sg.Text('ER', text_color='white', background_color='gray'), sg.Input(do_not_clear=True, key='_ER_')],
-        [sg.ReadFormButton('SubmitER', button_color=('gray34','azure2'), key='submitE')],
-        [sg.Text('GR', text_color='white', background_color='gray'), sg.Multiline( size=(42, 11), key='_GR_')],
-        [sg.ReadFormButton('SubmitGR', button_color=('gray34','azure2'), key='submitG')],
+columm_layout = [[]]
 
-                
+
+
+tab1_layout = [ [sg.Text('ER', text_color='white', background_color='gray'), sg.Input(do_not_clear=True, key='_ER_'), sg.ReadFormButton('SubmitER', button_color=('gray34','azure2'), key='submitE')],
+        [sg.Text('GR', text_color='white', background_color='gray'), sg.Multiline( size=(42, 11), key='_GR_'),  sg.ReadFormButton('SubmitGR', button_color=('gray34','azure2'), key='submitG')],
+
         [sg.Text('AF', text_color='white', background_color='gray'), sg.Text('Digite linha , coluna:', text_color='white', background_color='gray'),        
             sg.In(key='inROW', justification='right', size=(8,1), pad=(1,1), do_not_clear=True),
-            sg.In(key='inCOL', size=(8,1), pad=(1,1), justification='right', do_not_clear=True)],
-        [sg.Column(columm_layout, size=(604,212),  key='_AF_', scrollable=True)],
-        [sg.ReadFormButton('SubmitAF', button_color=('gray34','azure2'), key='submitA')] ]
+            sg.In(key='inCOL', size=(8,1), pad=(1,1), justification='right', do_not_clear=True), sg.ReadFormButton('SubmitAF', button_color=('gray34','azure2'), key='submitA')] ] 
 
 tab2_layout = [ [sg.T('Carregar ER, AF, GR')],
               [sg.Button('Open')],
               [sg.T('Salvar ER, AF, GR')],
               [sg.Button('Save')] ]
                
-tab3_layout = [ [sg.In(key='_in2_')] ]
+tab3_layout = [ [sg.T('select ER, AF, GR')],
+              [],
+              [sg.T('Converter GR <-> AF')],
+              [sg.Button('Conv')] ]
 
 # Window layout
+
 layout = [  [sg.Menu(menu_def)],
             [sg.TabGroup([[sg.Tab('Entrada', tab1_layout), sg.Tab('Carregar/Salvar', tab2_layout), sg.Tab('Conversoes', tab3_layout)]], key='_TABGROUP_')],
          ]
@@ -80,6 +76,18 @@ while True:
        print( values['_GR_' ] )
        gramaticas.append(gra)
        continue
+    elif event == 'submitA':
+       
+      ##MAX_ROWS = row if (row is None) else 7  
+      ##MAX_COL  = col if (col is None) else 7   
+      ## for i in range(MAX_ROWS):
+      ##   inputs = [sg.T('{}'.format(i), size=(3,1), justification='right')] + [sg.In(size=(5, 1), pad=(1, 1), justification='right', key=(i,j), do_not_clear=True) for j in range(MAX_COL)]
+      ##   columm_layout.append(inputs)
+      ##
+      ### popup AF edit 
+      ## sg.Column(columm_layout, size=(604,212),  key='_AF_', scrollable=True)
+      ## 
+      continue          
     elif event == 'Open':
         ##
         
@@ -93,7 +101,9 @@ while True:
           #crud.Crud.save_gramaticas(gramaticas)
           #crud.Crud.save_automatos(automatos) 
           continue
-    elif event == '':
+    elif event == 'Edit':
+       ##
+       continue
    
   
          
