@@ -3,8 +3,6 @@
 ##         Vinícius Schwinden Berkenbrock
 ##
 
-import automato_finito
 import gramatica_regular
-import expressao_regular
 
-import crud
+gr = gramatica_regular.GramaticaRegular()

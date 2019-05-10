@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+##   Trabalho    Formais 2019-1
+## Alunos: Bruno George de Moraes
+##         Vinícius Schwinden Berkenbrock
+##
+
 import automato_finito
 import gramatica_regular
 import expressao_regular
@@ -55,8 +60,8 @@ ui = sg.Window(' Trabalho Formais by Bruno e Vinicius - 2019.1 ')
 while True:
     event, values = ui.Layout(layout).Read() 
 
-    print(expressoes)
-    print ('LEN {}'.format(len(expressoes)) )
+    #print(expressoes)
+    #print ('LEN {}'.format(len(expressoes)) )
     
     # --- Process buttons --- #
     if event is None or event == 'Sair':
@@ -88,9 +93,9 @@ while True:
           #crud.Crud.save_gramaticas(gramaticas)
           #crud.Crud.save_automatos(automatos) 
           continue
+    elif event == '':
    
   
-
          
 # valores recebidos como dicionario
 #print(event, values['_ER_'], values['_AF_'], values['_GR_']) 

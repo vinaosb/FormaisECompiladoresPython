@@ -1,3 +1,8 @@
+##   Trabalho    Formais 2019-1
+## Alunos: Bruno George de Moraes
+##         Vinícius Schwinden Berkenbrock
+##
+
 class ExpressaoRegular:
 
     expr = '#'
