@@ -21,4 +21,5 @@ def main_teste():
     teste3()
     teste4()
 
-main_teste()
+if __name__ == "__main__":
+    main_teste()
