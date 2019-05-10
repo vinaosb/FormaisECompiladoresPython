@@ -8,7 +8,7 @@ import gramatica_regular
 import expressao_regular
 import sys
 sys.path.insert(0, '../testes/')
-import teste1Afnd&Afd
+import teste1AfndEpsulonAfd
 import teste2AfndAfd
 import teste3AfdGr
 import teste4GrAfnd
