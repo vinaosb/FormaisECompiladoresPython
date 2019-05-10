@@ -10,4 +10,4 @@ init:
     pip install PySimpleGUI
 
 run:  init
-    python main.py
+    python3 main.py

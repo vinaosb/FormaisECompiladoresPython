@@ -5,14 +5,19 @@ import gramatica_regular
 import expressao_regular
 import crud
 #GUI
-import PySimpleGUI as sg  
+import PySimpleGUI as sg
+
 
 sg.ChangeLookAndFeel('BlueMono')
 sg.SetOptions(text_justification='right')      
 
+expressoes = []
+gramaticas = []
+automatos  = []
+
 columm_layout = [[]]
-MAX_ROWS = 8
-MAX_COL = 7
+MAX_ROWS = 8  # todo input value
+MAX_COL = 7   # input
 for i in range(MAX_ROWS):
    inputs = [sg.T('{}'.format(i), size=(4,1), justification='right')] + [sg.In(size=(10, 1), pad=(1, 1), justification='right', key=(i,j), do_not_clear=True) for j in range(MAX_COL)]
    columm_layout.append(inputs)
@@ -39,36 +44,46 @@ tab2_layout = [ [sg.T('Carregar ER, AF, GR')],
                
 tab3_layout = [ [sg.In(key='_in2_')] ]
 
-
 # Window layout
 layout = [  [sg.Menu(menu_def)],
             [sg.TabGroup([[sg.Tab('Entrada', tab1_layout), sg.Tab('Carregar/Salvar', tab2_layout), sg.Tab('Conversoes', tab3_layout)]], key='_TABGROUP_')],
-            [sg.Button('Sair')] ]
+         ]
 
 # Display the window and get values
+ui = sg.Window(' Trabalho Formais by Bruno e Vinicius - 2019.1 ')
 
 while True:
-    event, values = sg.Window(' Trabalho Formais by Bruno e Vinicius - 2019.1 ').Layout(layout).Read()
-    #sg.PopupNonBlocking('button = %s' % event, 'Values dictionary', values)
+    event, values = ui.Layout(layout).Read() 
 
     # --- Process buttons --- #
     if event is None or event == 'Sair':
         break
     elif event == 'Sobre...':
         sg.Popup('Primeira entrega  AF ER GR - 2019.1 - ')
+        continue
     elif event == 'submitE':
-       exr =  expressao_regular( values['_ER_'] )
-       print( values['_ER_'] )
+       print( values['_ER_'] + ':' )
+       exr = expressao_regular.ExpressaoRegular(values['_ER_'],  )
+       exr.print()
+       expressoes.append(exr)
+       continue
     elif event == 'submitG':
-       gra =  gramatica_regular( values['_GR_'] )
+       gra =  gramatica_regular.GramaticaRegular( values['_GR_'] )
        print( values['_GR_' ] )
+       continue
     elif event == 'Open':
-            ##
-        expressoes = crud.load_expressoes()
-    elif event == 'Save':
         ##
-          
-         continue
+        
+        expressoes = crud.Crud.load_expressoes()
+        #gramaticas = crud.Crud.load_gramaticas()
+        #automatos  = crud.Crud.load_automatos()
+        continue
+    elif event == 'Save':
+          ##
+          crud.Crud.save_expressoes(expressoes)
+          #crud.Crud.save_gramaticas(gramaticas)
+          #crud.Crud.save_automatos(automatos) 
+          continue
 
          
 # valores recebidos como dicionario
