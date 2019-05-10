@@ -56,6 +56,8 @@ while True:
     event, values = ui.Layout(layout).Read() 
 
     print(expressoes)
+    print ('LEN {}'.format(len(expressoes)) )
+    
     # --- Process buttons --- #
     if event is None or event == 'Sair':
         break
@@ -64,12 +66,14 @@ while True:
         continue
     elif event == 'submitE':
        exr = expressao_regular.ExpressaoRegular( values['_ER_'] + '#' )
-       print(exr.print())
+       exr.nomear( str(len(expressoes)) + ';' )
+       print ( exr.nome )      
        expressoes.append(exr)
        continue
     elif event == 'submitG':
        gra =  gramatica_regular.GramaticaRegular( values['_GR_'] )
        print( values['_GR_' ] )
+       gramaticas.append(gra)
        continue
     elif event == 'Open':
         ##

@@ -13,6 +13,7 @@ class Crud:
             file_object.write(a.finais)
             file_object.write(a.estados)
             file_object.write(a.transicoes)
+            file_object.write('\n')
 
     
     def save_gramaticas(gramaticas):
@@ -23,6 +24,7 @@ class Crud:
             file_object.write(g.inicial)
             file_object.write(g.variaveis)
             file_object.write(g.transicoes)
+            file_object.write('\n')
 
                 
     def save_expressoes(expressoes):
