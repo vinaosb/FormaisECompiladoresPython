@@ -20,3 +20,5 @@ def main_teste():
     teste2()
     teste3()
     teste4()
+
+main_teste()

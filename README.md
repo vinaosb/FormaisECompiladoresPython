@@ -1,9 +1,10 @@
 # FormaisECompiladoresPython
 
-Universidade Federal de Santa Catarina Departamento de Informática e Estatística 10/05/2019
+Universidade Federal de Santa Catarina Departamento de Informï¿½tica e Estatï¿½stica 10/05/2019
 
-Bruno George de Moraes Vinícius Schwinden Berkenbrock 
+Bruno George de Moraes e Vinicius Schwinden Berkenbrock 
 
 Linguagem: python 
-Estruturas de dados usadas: listas, dicionarios
+Estruturas de dados usadas: listas, sets, dicionarios
 
+Usamos a biblioteca PySimpleGUI para fazer a interface grafica com usuario
