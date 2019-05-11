@@ -84,7 +84,7 @@ class AutomatoFinito:
 		lista = set()
 		for x in self.transicoes.keys():
 			lista = lista.union(set(x[1]))
-		lista = lista - set('&')
+		lista = lista
 		return lista
 
 # imprime a tabela de transicoes do automato
