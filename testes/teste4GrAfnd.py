@@ -4,7 +4,7 @@
 ##
 
 import sys
-sys.path.insert(0, '../src/')
+sys.path.append('../src/')
 
 import gramatica_regular
 

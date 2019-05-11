@@ -3,7 +3,7 @@
 ##         Vinícius Schwinden Berkenbrock
 ##
 import sys
-sys.path.insert(0, '../src/')
+sys.path.append('../src/')
 
 import automato_finito
 
