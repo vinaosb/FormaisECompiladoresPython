@@ -26,8 +26,8 @@ class Crud:
         for g in gramaticas:
             file_object.writelines(g.nome)
             file_object.writelines(g.inicial)
-            file_object.writelines(g.variaveis)
-            file_object.writelines(g.transicoes)
+            file_object.writelines(str(g.variaveis))
+            file_object.writelines(str(g.transicoes))
 
                 
     def save_expressoes(expressoes):
@@ -41,13 +41,13 @@ class Crud:
     def load_automatos():
         file_object = open("automatos.txt",'r')
         ret = []
-        aut = AutomatoFinito()
+        aut = automato_finito.AutomatoFinito()
 
         lines = file_object.readlines()
 
         for i in range(0, len(lines)):
             if (i%5 == 0):
-                aut = AutomatoFinito(lines[i])
+                aut = automato_finito.AutomatoFinito(lines[i])
             if (i%5 == 1):
                 aut.inicial = lines[i]
             if (i%5 == 2):
@@ -62,13 +62,13 @@ class Crud:
     def load_gramaticas():
         file_object = open("gramaticas.txt",'r')
         ret = []
-        gra = GramaticaRegular()
+        gra = gramatica_regular.GramaticaRegular()
 
         lines = file_object.readlines()
 
         for i in range(0, len(lines)):
             if (i%4 == 0):
-                gra = GramaticaRegular(lines[i])
+                gra = gramatica_regular.GramaticaRegular(lines[i])
             if (i%4 == 1):
                 gra.inicial = lines[i]
             if (i%4 == 2):
@@ -81,13 +81,13 @@ class Crud:
     def load_expressoes():
         file_object = open("expressoes.txt",'r')
         ret = []
-        exp = ExpressaoRegular()
+        exp = expressao_regular.ExpressaoRegular()
 
         lines = file_object.readlines()
 
         for i in range(0, len(lines)):
             if (i%2 == 0):
-                exp = ExpressaoRegular(lines[i])
+                exp = expressao_regular.ExpressaoRegular(lines[i])
             else:
                 exp.expr = lines[i]
                 ret.append(exp)
