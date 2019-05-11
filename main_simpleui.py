@@ -55,6 +55,9 @@ layout = [  [sg.Menu(menu_def)],
 # Display the window and get values
 ui = sg.Window(' Trabalho Formais by Bruno e Vinicius - 2019.1 ')
 
+# Crud Interface
+cr = crud.Crud()
+
 while True:
     event, values = ui.Layout(layout).Read() 
 
@@ -92,15 +95,12 @@ while True:
       continue          
     elif event == 'Open':
         ##
-        cr = crud.Crud()
-        
         expressoes = cr.load_expressoes()
         gramaticas = cr.load_gramaticas()
         automatos  = cr.load_automatos()
         continue
     elif event == 'Save':
         ## 
-        cr = crud.Crud()
         cr.save_expressoes(expressoes)
         cr.save_gramaticas(gramaticas)
         cr.save_automatos(automatos) 
