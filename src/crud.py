@@ -9,6 +9,11 @@ from src import expressao_regular as er
 
 
 class Crud:
+    nome = ''
+
+    def __init__(self):
+        self.nome = 'nome'
+
     def save_automatos(self, automatos):
         file_object = open("automatos.txt",'w')
 

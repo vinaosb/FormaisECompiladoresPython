@@ -92,17 +92,19 @@ while True:
       continue          
     elif event == 'Open':
         ##
+        cr = crud.Crud()
         
-        expressoes = crud.Crud.load_expressoes()
-        gramaticas = crud.Crud.load_gramaticas()
-        #automatos  = crud.Crud.load_automatos()
+        expressoes = cr.load_expressoes()
+        gramaticas = cr.load_gramaticas()
+        automatos  = cr.load_automatos()
         continue
     elif event == 'Save':
-          ## 
-          crud.Crud.save_expressoes(expressoes)
-          crud.Crud.save_gramaticas(gramaticas)
-          #crud.Crud.save_automatos(automatos) 
-          continue
+        ## 
+        cr = crud.Crud()
+        cr.save_expressoes(expressoes)
+        cr.save_gramaticas(gramaticas)
+        cr.save_automatos(automatos) 
+        continue
     elif event == 'Conv GR-AF':
        ##
        
