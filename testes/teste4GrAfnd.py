@@ -2,11 +2,7 @@
 ## Alunos: Bruno George de Moraes
 ##         Vinícius Schwinden Berkenbrock
 ##
-
-import sys
-sys.path.append('../src/')
-
-import gramatica_regular
+from src import gramatica_regular
 
 def teste4():
     gr = gramatica_regular.GramaticaRegular()

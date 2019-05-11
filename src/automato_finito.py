@@ -3,7 +3,7 @@
 ##         Vinícius Schwinden Berkenbrock
 ##
 
-import gramatica_regular
+from src import gramatica_regular
 
 class AutomatoFinito:
 	estados = set()

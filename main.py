@@ -13,10 +13,10 @@ from testes import teste4GrAfnd
 
 
 def main_teste():
-    teste1()
-    teste2()
-    teste3()
-    teste4()
+    teste1AfndEpsulonAfd.teste1()
+    teste2AfndAfd.teste2()
+    teste3AfdGr.teste3()
+    teste4GrAfnd.teste4()
 
 if __name__ == "__main__":
     main_teste()
