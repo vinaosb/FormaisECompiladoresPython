@@ -87,14 +87,19 @@ class AutomatoFinito:
 		lista = lista - set('&')
 		return lista
 
+# retorna o conjunto de caracteres que compõe o alfabeto do automato
+	def alfabetoComE(self):
+		lista = set()
+		for x in self.transicoes.keys():
+			lista = lista.union(set(x[1]))
+		lista = lista
+		return lista
+
 # imprime a tabela de transicoes do automato
 	def print(self):
 		saida = ''
 		nome = 'estado'
-		alfabeto = self.alfabeto()
-		for x in self.transicoes.keys():
-			if x[1] == '&':
-				alfabeto.union(set('&'))
+		alfabeto = self.alfabetoComE()
 		temp = "-----------------"
 		saida = saida + f'|{nome:15}|'
 		for a in alfabeto:
