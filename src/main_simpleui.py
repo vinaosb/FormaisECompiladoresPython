@@ -27,7 +27,7 @@ columm_layout = [[]]
 
 
 
-tab1_layout = [ [sg.Text('ER', text_color='white', background_color='gray'), sg.Input(do_not_clear=True, key='_ER_'), sg.ReadFormButton('SubmitER', button_color=('gray34','azure2'), key='submitE')],
+tab1_layout = [ [sg.Text('ER', text_color='white', background_color='gray'), sg.Input(key='_ER_'), sg.ReadFormButton('SubmitER', button_color=('gray34','azure2'), key='submitE')],
         [sg.Text('GR', text_color='white', background_color='gray'), sg.Multiline( size=(42, 11), key='_GR_'),  sg.ReadFormButton('SubmitGR', button_color=('gray34','azure2'), key='submitG')],
 
         [sg.Text('AF', text_color='white', background_color='gray'), sg.Text('Digite linha , coluna:', text_color='white', background_color='gray'),        
@@ -40,9 +40,11 @@ tab2_layout = [ [sg.T('Carregar ER, AF, GR')],
               [sg.Button('Save')] ]
                
 tab3_layout = [ [sg.T('select ER, AF, GR')],
-              [],
+              [ ],
+              [sg.T('Converter AF <-> GR')],
+              [sg.Button('Conv AF-GR')],
               [sg.T('Converter GR <-> AF')],
-              [sg.Button('Conv')] ]
+              [sg.Button('Conv GR-AF')] ]
 
 # Window layout
 
@@ -67,7 +69,7 @@ while True:
         continue
     elif event == 'submitE':
        exr = expressao_regular.ExpressaoRegular( values['_ER_'] + '#' )
-       exr.nomear( str(len(expressoes)) + ';' )
+       exr.nomear( str(len(expressoes)) )
        print ( exr.nome )      
        expressoes.append(exr)
        continue
@@ -92,19 +94,29 @@ while True:
         ##
         
         expressoes = crud.Crud.load_expressoes()
-        #gramaticas = crud.Crud.load_gramaticas()
+        gramaticas = crud.Crud.load_gramaticas()
         #automatos  = crud.Crud.load_automatos()
         continue
     elif event == 'Save':
           ## 
           crud.Crud.save_expressoes(expressoes)
-          #crud.Crud.save_gramaticas(gramaticas)
+          crud.Crud.save_gramaticas(gramaticas)
           #crud.Crud.save_automatos(automatos) 
           continue
-    elif event == 'Edit':
+    elif event == 'Conv GR-AF':
        ##
-       continue
-   
+       
+      
+
+       
+          continue
+    elif event == 'Conv AF-GR':
+       ##
+       
+      
+
+       
+        continue
   
          
 # valores recebidos como dicionario
