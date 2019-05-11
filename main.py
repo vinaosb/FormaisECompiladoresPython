@@ -2,9 +2,9 @@
 ## Alunos: Bruno George de Moraes
 ##         Vinícius Schwinden Berkenbrock
 ##
-from src import automato_finito
-from src import gramatica_regular
-from src import expressao_regular
+from src import automato_finito as af
+from src import gramatica_regular as gr
+from src import expressao_regular as er
 from testes import teste1AfndEpsulonAfd
 from testes import teste2AfndAfd
 from testes import teste3AfdGr
