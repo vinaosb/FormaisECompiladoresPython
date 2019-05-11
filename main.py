@@ -2,16 +2,13 @@
 ## Alunos: Bruno George de Moraes
 ##         Vinícius Schwinden Berkenbrock
 ##
-import sys
-sys.path.append('../src/')
-sys.path.append('../testes/')
-import automato_finito
-import gramatica_regular
-import expressao_regular
-import teste1AfndEpsulonAfd
-import teste2AfndAfd
-import teste3AfdGr
-import teste4GrAfnd
+from src import automato_finito
+from src import gramatica_regular
+from src import expressao_regular
+from testes import teste1AfndEpsulonAfd
+from testes import teste2AfndAfd
+from testes import teste3AfdGr
+from testes import teste4GrAfnd
 
 
 
