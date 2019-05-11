@@ -84,7 +84,7 @@ class AutomatoFinito:
 		lista = set()
 		for x in self.transicoes.keys():
 			lista = lista.union(set(x[1]))
-		lista = lista
+		lista = lista - set('&')
 		return lista
 
 # imprime a tabela de transicoes do automato
@@ -92,6 +92,9 @@ class AutomatoFinito:
 		saida = ''
 		nome = 'estado'
 		alfabeto = self.alfabeto()
+		for x in self.transicoes.keys():
+			if x[1] == '&':
+				alfabeto.union(set('&'))
 		temp = "-----------------"
 		saida = saida + f'|{nome:15}|'
 		for a in alfabeto:
