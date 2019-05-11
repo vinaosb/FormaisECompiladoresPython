@@ -1,4 +1,4 @@
-.PHONY: run init
+.PHONY: run init gui
 .DEFAULT: run
 
 init:
@@ -6,3 +6,6 @@ init:
 
 run:  init
     python3 main.py
+
+gui: init
+    python3 main_simpleui.py
