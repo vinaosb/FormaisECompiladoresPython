@@ -19,7 +19,7 @@ def teste2():
 
     af2 = af.to_afd()
 
-    print('Automato teste1')
+    print('Automato teste2')
     print(af.print())
-    print('Automato Deterministico resultante de teste1: \n')
+    print('Automato Deterministico resultante de teste2: \n')
     print(af2.print())

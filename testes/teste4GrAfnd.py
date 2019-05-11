@@ -16,7 +16,7 @@ def teste4():
     gr.set_variavel_inicial('S')
 
     print(gr.print())
-    print('GR convertida para afnd: \n')
+    print('Teste 4: GR convertida para afnd: \n')
     print(gr.to_afnd().print())
 
 

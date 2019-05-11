@@ -16,7 +16,7 @@ def teste3():
     af.add_estados_finais('qf')
     af.set_estado_inicial('q0')
 
-    print('Automato teste2')
+    print('Automato teste3')
     print(af.print())
-    print('Automato teste2 transformado em gr: \n')
+    print('Automato teste3 transformado em gr: \n')
     print(af.to_gr().print())
