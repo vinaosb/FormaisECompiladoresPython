@@ -18,7 +18,6 @@ class Crud:
             file_object.writelines(a.finais)
             file_object.writelines(a.estados)
             file_object.writelines(a.transicoes)
-            file_object.writelines('\n')
 
     
     def save_gramaticas(gramaticas):
@@ -29,7 +28,6 @@ class Crud:
             file_object.writelines(g.inicial)
             file_object.writelines(g.variaveis)
             file_object.writelines(g.transicoes)
-            file_object.writelines('\n')
 
                 
     def save_expressoes(expressoes):
@@ -38,7 +36,6 @@ class Crud:
         for e in expressoes:
             file_object.writelines(e.nome)
             file_object.writelines(e.expr)
-            file_object.writelines('\n')
 
 
     def load_automatos():
