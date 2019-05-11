@@ -26,8 +26,8 @@ class Crud:
         for g in gramaticas:
             file_object.writelines(g.nome)
             file_object.writelines(g.inicial)
-            file_object.writelines(g.variaveis)
-            file_object.writelines(g.transicoes)
+            file_object.writelines(str(g.variaveis))
+            file_object.writelines(str(g.transicoes))
 
                 
     def save_expressoes(self, expressoes):
