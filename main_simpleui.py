@@ -5,10 +5,10 @@
 ##         Vinícius Schwinden Berkenbrock
 ##
 
-import automato_finito as af
-import gramatica_regular as gr
-import expressao_regular as er
-import crud
+from src import automato_finito as af
+from src import gramatica_regular as gr
+from src import expressao_regular as er
+from src import crud
 #GUI
 import PySimpleGUI as sg
 
