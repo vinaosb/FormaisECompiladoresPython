@@ -2,6 +2,7 @@
 .DEFAULT: run
 
 init:
+    sudo apt install python3-tk
     pip install PySimpleGUI
 
 run:  init

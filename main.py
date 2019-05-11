@@ -13,7 +13,7 @@ from testes import teste4GrAfnd
 
 
 def main_teste():
-    teste1AfndEpsulonAfd.teste1()
+    #teste1AfndEpsulonAfd.teste1()
     teste2AfndAfd.teste2()
     teste3AfdGr.teste3()
     teste4GrAfnd.teste4()
