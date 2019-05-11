@@ -3,7 +3,7 @@
 ##         Vinícius Schwinden Berkenbrock
 ##
 
-import automato_finito
+from src import automato_finito
 
 class GramaticaRegular:
 	variaveis = set()

@@ -2,10 +2,7 @@
 ## Alunos: Bruno George de Moraes
 ##         Vinícius Schwinden Berkenbrock
 ##
-import sys
-sys.path.append('../src/')
-
-import automato_finito
+from src import automato_finito
 
 def teste1():
     af = automato_finito.AutomatoFinito()

@@ -3,13 +3,13 @@
 ##         Vinícius Schwinden Berkenbrock
 ##
 
-import automato_finito
-import gramatica_regular
-import expressao_regular
+from src import automato_finito
+from src import gramatica_regular
+from src import expressao_regular
 
 
 class Crud:
-    def save_automatos(automatos):
+    def save_automatos(self, automatos):
         file_object = open("automatos.txt",'w')
 
         for a in automatos:
@@ -20,7 +20,7 @@ class Crud:
             file_object.writelines(a.transicoes)
 
     
-    def save_gramaticas(gramaticas):
+    def save_gramaticas(self, gramaticas):
         file_object = open("gramaticas.txt",'w')
 
         for g in gramaticas:
@@ -30,7 +30,7 @@ class Crud:
             file_object.writelines(g.transicoes)
 
                 
-    def save_expressoes(expressoes):
+    def save_expressoes(self, expressoes):
         file_object = open("expressoes.txt",'w')
 
         for e in expressoes:
@@ -38,7 +38,7 @@ class Crud:
             file_object.writelines(e.expr)
 
 
-    def load_automatos():
+    def load_automatos(self):
         file_object = open("automatos.txt",'r')
         ret = []
         aut = AutomatoFinito()
@@ -59,7 +59,7 @@ class Crud:
                 ret.append(aut)
         return ret
             
-    def load_gramaticas():
+    def load_gramaticas(self):
         file_object = open("gramaticas.txt",'r')
         ret = []
         gra = GramaticaRegular()
@@ -78,7 +78,7 @@ class Crud:
                 ret.append(gra)
         return ret
 
-    def load_expressoes():
+    def load_expressoes(self):
         file_object = open("expressoes.txt",'r')
         ret = []
         exp = ExpressaoRegular()
