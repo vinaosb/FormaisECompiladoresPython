@@ -3,9 +3,9 @@
 ##         Vinícius Schwinden Berkenbrock
 ##
 
-from src import automato_finito
-from src import gramatica_regular
-from src import expressao_regular
+from src import automato_finito as af
+from src import gramatica_regular as gr
+from src import expressao_regular as er
 
 
 class Crud:
@@ -41,13 +41,13 @@ class Crud:
     def load_automatos(self):
         file_object = open("automatos.txt",'r')
         ret = []
-        aut = AutomatoFinito()
+        aut = af.AutomatoFinito()
 
         lines = file_object.readlines()
 
         for i in range(0, len(lines)):
             if (i%5 == 0):
-                aut = AutomatoFinito(lines[i])
+                aut = af.AutomatoFinito(lines[i])
             if (i%5 == 1):
                 aut.inicial = lines[i]
             if (i%5 == 2):
@@ -62,13 +62,13 @@ class Crud:
     def load_gramaticas(self):
         file_object = open("gramaticas.txt",'r')
         ret = []
-        gra = GramaticaRegular()
+        gra = gr.GramaticaRegular()
 
         lines = file_object.readlines()
 
         for i in range(0, len(lines)):
             if (i%4 == 0):
-                gra = GramaticaRegular(lines[i])
+                gra = gr.GramaticaRegular(lines[i])
             if (i%4 == 1):
                 gra.inicial = lines[i]
             if (i%4 == 2):
@@ -81,13 +81,13 @@ class Crud:
     def load_expressoes(self):
         file_object = open("expressoes.txt",'r')
         ret = []
-        exp = ExpressaoRegular()
+        exp = er.ExpressaoRegular()
 
         lines = file_object.readlines()
 
         for i in range(0, len(lines)):
             if (i%2 == 0):
-                exp = ExpressaoRegular(lines[i])
+                exp = er.ExpressaoRegular(lines[i])
             else:
                 exp.expr = lines[i]
                 ret.append(exp)
