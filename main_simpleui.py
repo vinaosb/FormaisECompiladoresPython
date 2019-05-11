@@ -5,9 +5,9 @@
 ##         Vinícius Schwinden Berkenbrock
 ##
 
-import automato_finito
-import gramatica_regular
-import expressao_regular
+import automato_finito as af
+import gramatica_regular as gr
+import expressao_regular as er
 import crud
 #GUI
 import PySimpleGUI as sg
@@ -68,13 +68,13 @@ while True:
         sg.Popup('Primeira entrega  AF ER GR - 2019.1 - ')
         continue
     elif event == 'submitE':
-       exr = expressao_regular.ExpressaoRegular( values['_ER_'] + '#' )
+       exr = er.ExpressaoRegular( values['_ER_'] + '#' )
        exr.nomear( str(len(expressoes)) )
        print ( exr.nome )      
        expressoes.append(exr)
        continue
     elif event == 'submitG':
-       gra =  gramatica_regular.GramaticaRegular( values['_GR_'] )
+       gra =  gr.GramaticaRegular( values['_GR_'] )
        print( values['_GR_' ] )
        gramaticas.append(gra)
        continue
