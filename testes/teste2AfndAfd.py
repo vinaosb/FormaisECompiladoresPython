@@ -5,17 +5,7 @@
 from src import automato_finito
 
 def teste2():
-    af = automato_finito.AutomatoFinito()
     af2 = automato_finito.AutomatoFinito()
-
-    af.add_transicao('q0', 'a', 'q1')
-    af.add_transicao('q1', 'a', 'q1')
-    af.add_transicao('q1', 'a', 'q2')
-    af.add_transicao('q1', 'b', 'q2')
-    af.add_transicao('q2', 'b', 'qf')
-
-    af.add_estados_finais('qf')
-    af.set_estado_inicial('q0')
 
     af2.add_transicao('q0', 'a', 'q1')
     af2.add_transicao('q1', 'b', 'q2')
