@@ -13,32 +13,32 @@ class Crud:
         file_object = open("automatos.txt",'w')
 
         for a in automatos:
-            file_object.write(a.nome)
-            file_object.write(a.inicial)
-            file_object.write(a.finais)
-            file_object.write(a.estados)
-            file_object.write(a.transicoes)
-            file_object.write('\n')
+            file_object.writelines(a.nome)
+            file_object.writelines(a.inicial)
+            file_object.writelines(a.finais)
+            file_object.writelines(a.estados)
+            file_object.writelines(a.transicoes)
+            file_object.writelines('\n')
 
     
     def save_gramaticas(gramaticas):
         file_object = open("gramaticas.txt",'w')
 
         for g in gramaticas:
-            file_object.write(g.nome)
-            file_object.write(g.inicial)
-            file_object.write(g.variaveis)
-            file_object.write(g.transicoes)
-            file_object.write('\n')
+            file_object.writelines(g.nome)
+            file_object.writelines(g.inicial)
+            file_object.writelines(g.variaveis)
+            file_object.writelines(g.transicoes)
+            file_object.writelines('\n')
 
                 
     def save_expressoes(expressoes):
         file_object = open("expressoes.txt",'w')
 
         for e in expressoes:
-            file_object.write(e.nome)
-            file_object.write(e.expr)
-            file_object.write('\n')
+            file_object.writelines(e.nome)
+            file_object.writelines(e.expr)
+            file_object.writelines('\n')
 
 
     def load_automatos():
