@@ -1,8 +1,7 @@
-##   Trabalho    Formais 2019-1
+##   Trabalho Formais 2019-1
 ## Alunos: Bruno George de Moraes
 ##         Vinícius Schwinden Berkenbrock
 ##
-
 from src import gramatica_regular
 
 class AutomatoFinito:
@@ -129,7 +128,7 @@ class AutomatoFinito:
 # funcao que retorna um afd a partir de um automato finito
 # se o automato ja estiver determinizado não haverá mudancas
 # recebe como parametro 0 e {} inicialmente
-	def to_afd(self, count = 0, novos = {}):
+	def to_afd(self, count=0, novos={}):
 		repetir = False
 		afd = AutomatoFinito()
 		for e in self.estados:
@@ -202,3 +201,206 @@ class AutomatoFinito:
 		if self.inicial in self.finais:
 			gr.add_regras(self.inicial, '&', '&')
 		return gr
+
+#realiza a uniao de dois automatos e retorna o automato resultante
+	def uniao(self, at):
+		novo = AutomatoFinito()
+		a_1 = self.alfabeto()
+		a_2 = at.alfabeto()
+		k_1 = self.transicoes.keys()
+		k_2 = at.transicoes.keys()
+		alfabeto = a_1.union(a_2)
+		novos_estados = set()
+		novos_estados = novos_estados.union(((self.inicial, at.inicial),))
+		novo.add_estado(self.inicial + '_' + at.inicial)
+		novo.set_estado_inicial(self.inicial + '_' + at.inicial)
+		while len(novos_estados) > 0:
+			proximos = set()
+			for e in novos_estados:
+				for a in alfabeto:
+					if (e[0], a) in k_1:
+						ef_1 = self.transicoes[(e[0], a)][0]
+					else:
+						ef_1 = '&'
+					if (e[1], a) in k_2:
+						ef_2 = at.transicoes[(e[1], a)][0]
+					else:
+						ef_2 = '&'
+
+					
+					i = e[0] + '_' + e[1]
+					if ef_1 == '&' and ef_2 == '&':
+						f = '&'
+					else:
+						f = ef_1 + '_' + ef_2
+					if not f in novo.estados:
+						proximos.add((ef_1, ef_2),)
+					novo.add_transicao(i, a, f)
+					if (ef_1 in self.finais) or (ef_2 in at.finais):
+						novo.add_estados_finais(f)
+					if (e[0] in self.finais) or (e[1] in at.finais):
+						novo.add_estados_finais(i)
+			novos_estados = proximos
+		novo.estados.remove('&_&')
+		novo.estados.remove('&')
+		return novo
+
+	#realiza a intersecao de dois automatos e retorna o automato resultante
+	def intersecao(self, at):
+		novo = AutomatoFinito()
+		a_1 = self.alfabeto()
+		a_2 = at.alfabeto()
+		k_1 = self.transicoes.keys()
+		k_2 = at.transicoes.keys()
+		alfabeto = a_1.union(a_2)
+		novos_estados = set()
+		novos_estados = novos_estados.union(((self.inicial, at.inicial),))
+		novo.add_estado(self.inicial + '_' + at.inicial)
+		novo.set_estado_inicial(self.inicial + '_' + at.inicial)
+		while len(novos_estados) > 0:
+			proximos = set()
+			for e in novos_estados:
+				for a in alfabeto:
+					if (e[0], a) in k_1:
+						ef_1 = self.transicoes[(e[0], a)][0]
+					else:
+						ef_1 = '&'
+					if (e[1], a) in k_2:
+						ef_2 = at.transicoes[(e[1], a)][0]
+					else:
+						ef_2 = '&'
+
+					
+					i = e[0] + '_' + e[1]
+					if ef_1 == '&' and ef_2 == '&':
+						f = '&'
+					else:
+						f = ef_1 + '_' + ef_2
+					if not f in novo.estados:
+						proximos.add((ef_1, ef_2),)
+					novo.add_transicao(i, a, f)
+					if (ef_1 in self.finais) and (ef_2 in at.finais):
+						novo.add_estados_finais(f)
+					if (e[0] in self.finais) and (e[1] in at.finais):
+						novo.add_estados_finais(i)
+			novos_estados = proximos
+		novo.estados.remove('&_&')
+		novo.estados.remove('&')
+		return novo
+
+	#remove os estados inalcancaveis do automato
+	def remover_estados_inalcancaveis(self):
+		estados_alcancaveis = set()
+		transicoes_alcancaveis = {}
+		novos_estados = set()
+		novos_estados.add(self.inicial)
+		alfabeto = self.alfabeto()
+		while len(novos_estados) > 0:
+			proximos = set()
+			for e in novos_estados:
+				estados_alcancaveis.add(e)
+				for a in alfabeto:
+					if (e,a) in self.transicoes.keys():
+						transicoes_alcancaveis[(e,a)] = [self.transicoes[(e, a)][0]]
+						n = self.transicoes[(e, a)][0]
+						if n != '&' and not n in estados_alcancaveis:
+							proximos.add(n)
+			novos_estados = proximos
+		self.estados = estados_alcancaveis
+		self.transicoes = transicoes_alcancaveis
+
+#remove os estados mortos do automato
+	def remover_estados_mortos(self):
+		estados_nao_mortos = set()
+		transicoes_nao_mortas = {}
+		novos_estados = set()
+		novos_estados = self.finais
+		while len(novos_estados) > 0:
+			proximos = set()
+			for e in novos_estados:
+				estados_nao_mortos.add(e)
+				for key , value in self.transicoes.items():
+					if e == value[0]:
+						transicoes_nao_mortas[key] = [self.transicoes[key][0]]
+						if not key[0] in estados_nao_mortos:
+							proximos.add(key[0])
+			novos_estados = proximos
+		self.estados = estados_nao_mortos
+		self.transicoes = transicoes_nao_mortas
+
+
+	def remover_estados_equivalentes(self):
+		af = AutomatoFinito()
+		estados = []
+		e1 = []
+		e2 = []
+		for e in (frozenset(self.estados - self.finais)):
+			e1.append((e, True, False))
+		for e in (frozenset(self.finais)):
+			e2.append((e, False, True))
+		estados.append(e1)
+		estados.append(e2)
+		print(estados)
+		estados = self.separar_estados(estados)
+		print(estados)
+		for e in estados:
+			inicial = False
+			final = False
+			for x in e:
+				if x[1]:
+					inicial = True
+				if x[2]:
+					final = True
+			print(e)
+			#for keys in self.transicoes.keys()
+			if inicial:
+				af.inicial = e[0][0]
+			if final:
+				af.finais.add(e[0][0])
+		return af
+
+	def separar_estados(self, estados):
+		transicoes = {}
+		novos_estados = []
+		count = 0
+		for e in estados:
+			for z in e:
+				x = z[0]
+				existe = [True] * len(novos_estados)
+				for a in self.alfabeto():
+					if (x, a) in self.transicoes.keys():
+						for i in range(len(novos_estados)):
+							if not (i, a) in transicoes.keys():
+								existe[i] = False
+							else:
+								if not self.transicoes[(x, a)] == transicoes[(i, a)]:
+									existe[i] = False
+					else:
+						for i in range(len(novos_estados)):
+							if (i, a) in transicoes.keys():
+								existe[i] = False
+						#if len(novos_estados) == 0:
+						#	existe[i] = False
+				existiu = False
+				for i in range(len(existe)):
+					if existe[i]:
+						novos_estados[i].append((x, x == self.inicial, x in self.finais))
+						existiu = True
+				if not existiu:
+					novos_estados.append([(x, x == self.inicial, x in self.finais)])
+					for a in self.alfabeto():
+						if (x, a) in self.transicoes.keys():
+							transicoes[(count, a)] = self.transicoes[(x, a)]
+					count = count + 1
+		if len(novos_estados) == len(estados):
+			return novos_estados
+		else:
+			return self.separar_estados(novos_estados)
+
+	def minimizar(self):
+		at = AutomatoFinito()
+		at = self
+		at.remover_estados_mortos()
+		at.remover_estados_inalcancaveis()
+		at.remover_estados_equivalentes()
+		return at
