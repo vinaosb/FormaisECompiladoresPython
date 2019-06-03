@@ -6,7 +6,7 @@
 from src import automato_finito as af
 from src import gramatica_regular as gr
 from src import expressao_regular as er
-from src import gramatia_livre_de_contexto as glc
+from src import gramatica_livre_de_contexto as glc
 
 
 class Crud:
@@ -25,7 +25,7 @@ class Crud:
 			file_object.writelines(a.estados)
 			file_object.writelines(a.transicoes)
 
-	
+
 	def save_gramaticas(self, gramaticas):
 		file_object = open("gramaticas.txt",'w')
 
@@ -43,8 +43,8 @@ class Crud:
 			file_object.writelines(g.inicial)
 			file_object.writelines(str(g.terminal))
 			file_object.writelines(str(g.naoTerminal))
-			file_object.writelines(str(g.regraProd))
-				
+			file_object.writelines(str(g.regrasProd))
+
 	def save_expressoes(self, expressoes):
 		file_object = open("expressoes.txt",'w')
 
@@ -73,7 +73,7 @@ class Crud:
 				aut.transicoes = lines[i]
 				ret.append(aut)
 		return ret
-			
+
 	def load_gramaticas(self):
 		file_object = open("gramaticas.txt",'r')
 		ret = []
@@ -92,7 +92,7 @@ class Crud:
 				gra.transicoes = lines[i]
 				ret.append(gra)
 		return ret
-	
+
 	def load_glcs(self):
 		file_object = open("gramaticas.txt",'r')
 		ret = []

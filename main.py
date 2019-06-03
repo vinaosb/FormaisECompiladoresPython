@@ -11,7 +11,7 @@ from testes import teste2AfndAfd
 from testes import teste3AfdGr
 from testes import teste4GrAfnd
 from testes import teste5GLCFirstFollow
-
+from testes import teste6minAf
 
 
 def main_teste():
@@ -20,6 +20,7 @@ def main_teste():
 	teste3AfdGr.teste3()
 	teste4GrAfnd.teste4()
 	teste5GLCFirstFollowTabPred.teste5()
+	teste6minAf.teste6()
 
 if __name__ == "__main__":
 	main_teste()
