@@ -1,4 +1,4 @@
-S -> Ab | ABc
-A -> aA | &
-B -> bB | Ad | &
+S-> ASB
+A-> Aa | &
+B-> Bb | &
 set()set(){}

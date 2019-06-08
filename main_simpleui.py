@@ -19,23 +19,34 @@ sg.SetOptions(text_justification='right')
 
 expressoes = []
 gramaticas = []
-gramLC = []
+gramLC     = []
 automatos  = []
 
-
+lenaf = 0
+lengr = 0
+lenglc = 0
+lener = 0
 menu_def = [['Info', 'Sobre...'],]
-
+###
 columm_layout = [[]]
+
+
+def entryAF(length, width):
+    entryLayout = [[sg.InputText('', size=(3, 1)) for i in range(length)] for _ in range(width)] + [[sg.CloseButton("OK"), sg.CloseButton("Cancel")]]
+
+    entryWin = sg.Window("Input AF").Layout(entryLayout)
+    button, values = entryWin.Read()
+    ##TODO format values in AF
+    print(','.join(values))
 
 
 
 tab1_layout = [ [sg.Text('ER', text_color='white', background_color='gray'), sg.Input(key='_ER_'), sg.ReadFormButton('SubmitER', button_color=('gray34','azure2'), key='submitE')],
-        [sg.Text('GR', text_color='white', background_color='gray'), sg.Multiline( size=(42, 11), key='_GR_'),  sg.ReadFormButton('SubmitGR', button_color=('gray34','azure2'), key='submitGR')],
-        [sg.Text('GLC', text_color='white', background_color='gray'), sg.Multiline( size=(42, 11), key='_GLC_'),  sg.ReadFormButton('SubmitGLC', button_color=('gray34','azure2'), key='submitGLC')],
-
-        [sg.Text('AF', text_color='white', background_color='gray'), sg.Text('Digite linha , coluna:', text_color='white', background_color='gray'),
-            sg.In(key='inROW', justification='right', size=(8,1), pad=(1,1), do_not_clear=True),
-            sg.In(key='inCOL', size=(8,1), pad=(1,1), justification='right', do_not_clear=True), sg.ReadFormButton('SubmitAF', button_color=('gray34','azure2'), key='submitA')] ]
+                [sg.Text('GR', text_color='white', background_color='gray'), sg.Multiline( size=(42, 11), key='_GR_'),  sg.ReadFormButton('SubmitGR', button_color=('gray34','azure2'), key='submitGR')],
+                [sg.Text('GLC', text_color='white', background_color='gray'), sg.Multiline( size=(42, 11), key='_GLC_'),  sg.ReadFormButton('SubmitGLC', button_color=('gray34','azure2'), key='submitGLC')],
+                [sg.Text('AF', text_color='white', background_color='gray'), sg.Text('Digite linha , coluna:', text_color='white', background_color='gray'),
+                 sg.In(key='inROW', size=(8,1), pad=(1,1), justification='right', do_not_clear=True), sg.In(key='inCOL', size=(8,1), pad=(1,1), justification='right', do_not_clear=True), sg.ReadFormButton('SubmitAF', button_color=('gray34','azure2'), key='submitA')],
+                ]
 
 tab2_layout = [ [sg.T('Carregar ER, AF, GR, GLC')],
               [sg.Button('Open')],
@@ -43,27 +54,26 @@ tab2_layout = [ [sg.T('Carregar ER, AF, GR, GLC')],
               [sg.Button('Save')] ]
 
 tab3_layout = [ [sg.T('select ER, AF, GR, GLC')],
-              [ ],
+              [ ],  #_selER_ _selGR_ _selAF_ _selGLC_
               [sg.T('Converter GR <-> AF')],
               [sg.Button('ConvGR-AF')],
               [ ],
-              [sg.T('select AF')],
-              [sg.T('Converter AF <-> GR')],
-              [sg.Button('ConvAF-GR')],
-              [sg.T('Converter AFND <-> AFD')],
-              [sg.Button('ConvAFND-AFD')],
-              [sg.T('Minimizar AF')],
-              [sg.Button('minAF')],
-              [sg.T('Uniao AF')],
-              [sg.Button('uniaoAF')],
-              [sg.T('interseção  AF')],
-              [sg.Button('interAF')],
+              [sg.Spin([i for i in range(1, 2 )], initial_value=1, key='_selAF_'), sg.Text('select AF')],
+              [sg.T('Converter AF <-> GR'), sg.Button('ConvAF-GR')],
+              [sg.T('Converter AFND <-> AFD'), sg.Button('ConvAFND-AFD')],
+              [sg.T('Minimizar AF'), sg.Button('minAF')],
+              [sg.T('Uniao AF'), sg.Button('uniaoAF')],
+              [sg.T('interseção  AF'), sg.Button('interAF')],
+              [sg.T('Reconhecer palavra AF'), sg.InputText('sentenca', key='_sentenca_')],
+              [sg.Button('checkAF')],
               [ ], ]
 
 # Window layout
 
 layout = [  [sg.Menu(menu_def)],
-            [sg.TabGroup([[sg.Tab('Entrada', tab1_layout), sg.Tab('Carregar/Salvar', tab2_layout), sg.Tab('Conversoes', tab3_layout)]], key='_TABGROUP_')],
+            [sg.TabGroup([[sg.Tab('Entrada', tab1_layout),
+             sg.Tab('Carregar/Salvar', tab2_layout),
+             sg.Tab('Conversoes', tab3_layout)]] ,key='_TABGROUP_')],
          ]
 
 # Display the window and get values
@@ -74,6 +84,11 @@ cr = crud.Crud()
 
 while True:
     event, values = ui.Layout(layout).Read()
+
+    lenaf = len(automatos)
+    lengr = len(gramaticas)
+    lenglc = len(gramLC)
+    lener = len(expressoes)
 
     #print(expressoes)
     #print ('LEN {}'.format(len(expressoes)) )
@@ -90,6 +105,10 @@ while True:
         gramaticas = cr.load_gramaticas()
         gramLC     = cr.load_glcs()
         automatos  = cr.load_automatos()
+        print( (cr.load_expressoes) )
+        ui.Element('_ER_').Update( (expressoes)[0] )
+        ui.Element('_GR_').Update( (gramaticas)[1].print() )
+        ui.Element('_GLC_').Update((gramLC)[2].print() )
         continue
     elif event == 'Save':
         ##
@@ -115,36 +134,39 @@ while True:
        gramLC.append(gra)
        continue
     elif event == 'submitA':
-
-      ##MAX_ROWS = row if (row is None) else 7
-      ##MAX_COL  = col if (col is None) else 7
-      ## for i in range(MAX_ROWS):
-      ##   inputs = [sg.T('{}'.format(i), size=(3,1), justification='right')] + [sg.In(size=(5, 1), pad=(1, 1), justification='right', key=(i,j), do_not_clear=True) for j in range(MAX_COL)]
-      ##   columm_layout.append(inputs)
-      ##
-      ### popup AF edit
+       entryAF( int(values['inCOL']), int(values['inROW']))
       ## sg.Column(columm_layout, size=(604,212),  key='_AF_', scrollable=True)
       ##
-      # ##ret = []
-      # gra = glc.GramaticaLivreContexto()
+      # ##Table(  values,
+      #   headings=None,
+      #   visible_column_map=None,
+      #   col_widths=None,
+      #   def_col_width=10,
+      #   auto_size_columns=True,
+      #   max_col_width=20,
+      #   select_mode=None,
+      #   display_row_numbers=False,
+      #   num_rows=None,
+      #   row_height=None,
+      #   font=None,
+      #   justification='right',
+      #   text_color=None,
+      #   background_color=None,
+      #   alternating_row_color=None,
+      #   row_colors=None,
+      #   vertical_scroll_only=True,
+      #   size=(None,None),
+      #   change_submits=False,
+      #   enable_events=False,
+      #   bind_return_key=False,
+      #   pad=None,
+      #   key=None,
+      #   tooltip=None,
+      #   right_click_menu=None,
+      #   visible=True):
       #
-      # lines = file_object.readlines()
-      #
-      # for i in range(0, len(lines)):
-      #     if (i%5 == 0):
-      #         gra = glc.GramaticaLivreContexto(lines[i])
-      #     if (i%5 == 1):
-      #         gra.inicial = lines[i]
-      #     if (i%5 == 2):
-      #         gra.terminal = lines[i]
-      #     if (i%5 == 3):
-      #         gra.naoTerminal = lines[i]
-      #     if (i%5 == 4):
-      #         gra.regrasProd = lines[i]
-      #         ret.append(gra)
       ##
-      continue
-
+       continue
     elif event == 'ConvGR-AF':
        ##
        af = gramaticas[ values['_selGR_'] ].to_afnd()
@@ -163,6 +185,10 @@ while True:
     elif event == 'minAF':
        ##
        automatos[values['_selAF_']].minimizar()
+       continue
+    elif event == 'checkAF':
+       ##
+       automatos[values['_selAF_']].checkAF( values['_sentenca_'] )
        continue
     elif event == 'interAF':
        ##
