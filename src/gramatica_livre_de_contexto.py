@@ -176,15 +176,47 @@ class GramaticaLivreContexto:
 						newprod += prod
 						newRegrasProd[nt].add(newprod)
 					else:
+						temp = ""
+						temp2 = nt
 						for i in range(0,len(prod)):
-							newprod += prod[i:i+2]
-							if i != 0:
+							if i != len(prod)-2:
 								temp = self.genNewSimb()
-								self.addNaoTerminal(temp)
-								newRegrasProd[temp].add(newprod)
 							else:
-								newRegrasProd[nt].add(newprod)
-						
+								temp = prod[i+1]
+							newprod += prod[i]
+							newprod += temp
+							if temp not in self.naoTerminal:
+								self.addNaoTerminal(temp)
+							newRegrasProd[temp2].add(newprod)
+							temp2 = temp
+			else:
+				newRegrasProd[nt] = self.regrasProd[nt]
+
+		self.regrasProd = newRegrasProd
+
+		# Remove & producoes
+		
+		# Remove Producoes Unitarias
+		newRegrasProd.clear()
+		for nt in self.naoTerminal:
+			newRegrasProd[nt] = set()
+
+			if nt not in aux:
+				newRegrasProd[nt] = addProdUni(nt)
+			else:
+				newRegrasProd[nt] = self.regrasProd[nt]
+
+		self.regrasProd = newRegrasProd
+
+	def addProdUni(self, nt):
+		newRegrasProd = set()
+		for prod in self.regrasProd[nt]:
+			if (len(prod) == 1):
+				for n in addProdUni(prod):
+					newRegrasProd.add(n)
+			else:
+				newRegrasProd.add(prod)
+		return newRegrasProd
 
 	# Gera um novo simbolo para gramatica (função auxiliar)
 	def genNewSimb(self):
