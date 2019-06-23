@@ -33,6 +33,9 @@ class GramaticaLivreContexto:
 	def addProducao(self,nt,prod):
 		self.regrasProd[nt].add(prod)
 
+	def remProducao(self,nt,prod):
+		self.regrasProd[nt].remove(prod)
+
 	def print(self):
 		saida = ''
 		for nt in self.naoTerminal:
@@ -124,6 +127,57 @@ class GramaticaLivreContexto:
 						if t == '&':
 							for tt in self.follows[prod[0]]:
 								self.preditiveTable[simb][tt].add(prod)
+
+	# Chomsky usa Z como estado inicial, e numeros de 0 a 9 para adicionar estados que levam a terminais
+	# Ou seja, só suporta até 10 terminais
+	def Chomsky(self):
+		# Eliminar simbolo inicial do lado direito de outras producoes
+		# Adicionar Z -> S como simbolo inicial
+		self.addNaoTerminal('Z')
+		self.addProducao('Z', self.inicial)
+		self.defInicial('Z')
+		aux = set()
+		i = 0
+		# Criar regra para levar de um nao terminal novo para um terminal | A -> a
+		for termi in self.terminal:
+			self.addNaoTerminal(str(i))
+			self.addProducao(str(i),termi)
+			aux.add(str(i))
+			i += 1
+
+		newRegrasProd = dict()
+		
+		# Olha as producoes que tem A-> BcD e transforma em A->BCD
+		for nt in self.naoTerminal:
+			newRegrasProd[nt] = set()
+			if nt not in aux:
+				for prod in self.regrasProd[nt]:
+					newprod = ""
+					for i in range(0,len(prod)):
+						if prod[i] in self.naoTerminal:
+							newprod += prod[i]
+						else:
+							for a in aux:
+								if prod[i] in self.regrasProd[a]:
+									newprod += a
+					newRegrasProd[nt].add(newprod)
+			else:
+				newRegrasProd[nt] = self.regrasProd[nt]
+			
+		self.regrasProd = newRegrasProd
+
+		# Elimina producoes com mais de 2 nao terminais | A -> BCD = A ->BC & C -> DE
+		newRegrasProd.clear()
+		for nt in self.naoTerminal:
+			newRegrasProd[nt] = set()
+
+			if nt not in aux:
+				for prod in self.regrasProd[nt]:
+					newprod = ""
+					if (len(prod) <= 2):
+						newprod += prod
+					
+
 
 	def printFirst(self):
 		self.calcFirst()
