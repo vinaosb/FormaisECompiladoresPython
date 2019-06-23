@@ -128,8 +128,7 @@ class GramaticaLivreContexto:
 							for tt in self.follows[prod[0]]:
 								self.preditiveTable[simb][tt].add(prod)
 
-	# Chomsky usa Z como estado inicial, e numeros de 0 a 9 para adicionar estados que levam a terminais
-	# Ou seja, só suporta até 10 terminais
+	# Chomsky usa Z como estado inicial
 	def Chomsky(self):
 		# Eliminar simbolo inicial do lado direito de outras producoes
 		# Adicionar Z -> S como simbolo inicial
@@ -137,13 +136,12 @@ class GramaticaLivreContexto:
 		self.addProducao('Z', self.inicial)
 		self.defInicial('Z')
 		aux = set()
-		i = 0
 		# Criar regra para levar de um nao terminal novo para um terminal | A -> a
 		for termi in self.terminal:
-			self.addNaoTerminal(str(i))
-			self.addProducao(str(i),termi)
-			aux.add(str(i))
-			i += 1
+			i = self.genNewSimb()
+			self.addNaoTerminal(i)
+			self.addProducao(i,termi)
+			aux.add(i)
 
 		newRegrasProd = dict()
 		
@@ -176,8 +174,31 @@ class GramaticaLivreContexto:
 					newprod = ""
 					if (len(prod) <= 2):
 						newprod += prod
-					
+						newRegrasProd[nt].add(newprod)
+					else:
+						for i in range(0,len(prod)):
+							newprod += prod[i:i+2]
+							if i != 0:
+								temp = self.genNewSimb()
+								self.addNaoTerminal(temp)
+								newRegrasProd[temp].add(newprod)
+							else:
+								newRegrasProd[nt].add(newprod)
+						
 
+	# Gera um novo simbolo para gramatica (função auxiliar)
+	def genNewSimb(self):
+		temp = "A"
+		for i in range(0,25):
+			if chr(ord(temp)+ i) not in self.naoTerminal and chr(ord(temp)+ i) not in self.terminal:
+				return chr(ord(temp)+ i)
+		temp = "a"
+		for i in range(0,26):
+			if chr(ord(temp)+ i) not in self.naoTerminal and chr(ord(temp)+ i) not in self.terminal:
+				return chr(ord(temp)+ i)
+		for i in range(0,10):
+			if str(i) not in self.naoTerminal and str(i) not in self.terminal:
+				return str(i)
 
 	def printFirst(self):
 		self.calcFirst()
