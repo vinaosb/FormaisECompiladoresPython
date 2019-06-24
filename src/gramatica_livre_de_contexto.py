@@ -211,16 +211,19 @@ class GramaticaLivreContexto:
 
 		newRegrasProd.clear()
 
-		# Remove Nao terminais Equivalentes (iguais)
+		# Remove Nao terminais Equivalentes (iguais) (maioria - 90% funcional)
 		remv = True
+		nextDel = set()
+		aux = set()
+		aux2 = dict()
 		while(remv):
 			remv = False
-			aux = set()
+			aux.clear()
 			for nt in self.naoTerminal:
 				for ntt in self.naoTerminal:
 					if nt != ntt and self.regrasProd[nt].issubset(self.regrasProd[ntt]) and self.regrasProd[ntt].issubset(self.regrasProd[nt]) and ntt+nt not in aux and nt+ntt not in aux:
 						aux.add(ntt + nt)
-			aux2 = dict()
+			aux2.clear()
 			for a in aux:
 				for nt in self.naoTerminal:
 					aux2[nt] = dict()
@@ -230,17 +233,35 @@ class GramaticaLivreContexto:
 								for i in range(0,len(prod)):
 									if a[0] == prod[i]:
 										aux2[nt][prod] = a[0] + prod[:i] + a[1] + prod[i+1:]
-			nextDel = set()
 			for nt in self.naoTerminal:
 				for prod, res in aux2[nt].items():
 					self.regrasProd[nt].remove(prod)
 					self.regrasProd[nt].add(res[1:])
 					nextDel.add(res[0])
-			if len(nextDel) > 0:
-				remv = True
 			for nd in nextDel:
 				self.regrasProd.pop(nd)
 				self.naoTerminal.remove(nd)
+				remv = True
+			nextDel.clear()
+		
+		# Estados Inalcancaveis
+		temp = self.removeInalcancaveis(self.inicial)
+
+		for k in self.naoTerminal.difference(temp):
+			self.regrasProd.pop(k)
+			self.naoTerminal.remove(k)
+
+	def removeInalcancaveis(self, nt):
+		ret = set()
+		for prod in self.regrasProd[nt]:
+			for i in range(0,len(prod)):
+				if prod[i] in self.terminal:
+					ret.add(nt)
+					break
+				else:
+					ret = ret.union(self.removeInalcancaveis(prod[i]))
+					ret.add(nt)
+		return ret
 
 
 	def remEpsulonProducoes(self):
