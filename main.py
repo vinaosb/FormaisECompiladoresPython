@@ -14,6 +14,7 @@ from testes import teste5GLCFirstFollowTabPred
 from testes import teste6minAf
 from testes import teste7checkAF
 from testes import teste8GLCelimEp
+from testes import teste9GLCChomsky
 
 
 def main_teste():
@@ -25,6 +26,7 @@ def main_teste():
 	#teste6minAf.teste6()
 	#teste7checkAf.teste7()
 	teste8GLCelimEp.teste8()
+	teste9GLCChomsky.teste9()
 
 if __name__ == "__main__":
 	main_teste()

@@ -143,6 +143,7 @@ class GramaticaLivreContexto:
 
 		newRegrasProd = dict()
 		
+
 		# Olha as producoes que tem A-> BcD e transforma em A->BCD
 		for nt in self.naoTerminal:
 			newRegrasProd[nt] = set()
@@ -201,7 +202,7 @@ class GramaticaLivreContexto:
 			newRegrasProd[nt] = set()
 
 			if nt not in aux:
-				newRegrasProd[nt] = addProdUni(nt)
+				newRegrasProd[nt] = self.addProdUni(nt)
 			else:
 				newRegrasProd[nt] = self.regrasProd[nt]
 
