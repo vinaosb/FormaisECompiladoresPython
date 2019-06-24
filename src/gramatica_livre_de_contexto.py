@@ -273,6 +273,34 @@ class GramaticaLivreContexto:
 				newRegrasProd.add(prod)
 		return newRegrasProd
 
+	def Fatoracao(self):
+		added = True
+		while(added):
+			added = False
+			aux = dict()
+			aux2 = dict()
+			for nt in self.naoTerminal:
+				aux[nt] = set()
+				aux2[nt] = set()
+				for prod1 in self.regrasProd[nt]:
+					for prod2 in self.regrasProd[nt]:
+						if prod1 != prod2:
+							if prod1[0] == prod2[0] and prod1 not in aux2[nt]:
+								aux2[nt].add(prod1)
+								aux2[nt].add(prod2)
+								novo = self.genNewSimb()
+								aux[nt].add(prod1[0] + novo)
+								self.addNaoTerminal(novo)
+								self.addProducao(novo,prod1[1:])
+								self.addProducao(novo,prod2[1:])
+								added = True
+				for e in aux[nt]:
+					self.regrasProd[nt].remove(e)
+				for e in aux2[nt]:
+					self.regrasProd[nt].add(e)
+				aux[nt].clear()
+				aux2[nt].clear()
+
 	# Gera um novo simbolo para gramatica (função auxiliar)
 	def genNewSimb(self):
 		temp = "A"
