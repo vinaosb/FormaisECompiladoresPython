@@ -101,8 +101,6 @@ class GramaticaLivreContexto:
 								if (l1 != len(self.follows[prod[i]])):
 									t = True
 
-						
-
 	def calcFirst(self):
 		for t in self.terminal:
 			self.firsts[t] = self.first(t)
@@ -195,6 +193,7 @@ class GramaticaLivreContexto:
 		self.regrasProd = newRegrasProd
 
 		# Remove & producoes
+		self.remEpsulonProducoes()
 		
 		# Remove Producoes Unitarias
 		newRegrasProd.clear()
@@ -207,6 +206,62 @@ class GramaticaLivreContexto:
 				newRegrasProd[nt] = self.regrasProd[nt]
 
 		self.regrasProd = newRegrasProd
+
+	def remEpsulonProducoes(self):
+		novo = GramaticaLivreContexto("temporario")
+		novo.terminal = self.terminal
+		conjE = self.idProducaoComEpsulon()
+		novo.naoTerminal = self.naoTerminal
+
+		for nt in novo.naoTerminal:
+			for prod in self.regrasProd[nt]:
+				if prod != '&':
+					novo.addProducao(nt,prod)
+		
+		adc = True
+		while(adc):
+			adc = False
+			for nt in novo.naoTerminal:
+				for prod in novo.regrasProd[nt]:
+					if len(prod > 1):
+						for i in range(0,len(prod)):
+							if prod[i] in conjE:
+								aux = prod[:i]
+								aux = prod[i+1:]
+								if aux not in novo.regrasProd[nt]:
+									novo.addProducao(nt,aux)
+									adc = True
+		
+		if self.inicial in conjE:
+			novoInicial = novo.genNewSimb()
+			novo.addNaoTerminal(novoInicial)
+			novo.addProducao(novoInicial, '&')
+			novo.addProducao(novoInicial, self.inicial)
+		else:
+			novo.defInicial(self.inicial)
+		
+		self.terminal = novo.terminal
+		self.naoTerminal = novo.naoTerminal
+		self.regrasProd = novo.regrasProd
+		self.inicial = novo.inicial
+
+	def idProducaoComEpsulon(self):
+		mod = True
+		e = set()
+		e.add('&')
+		while(mod):
+			mod = False
+			# X E N
+			for nt in self.naoTerminal:
+				# X !E E
+				if nt not in e:
+					# Existe uma producao de X em E
+					for prod in self.regrasProd[nt]:
+						if prod in e:
+							e.add(nt)
+							mod = True
+							break
+		return e
 
 	def addProdUni(self, nt):
 		newRegrasProd = set()
