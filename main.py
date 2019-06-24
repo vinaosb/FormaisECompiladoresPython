@@ -22,11 +22,11 @@ def main_teste():
 	#teste2AfndAfd.teste2()
 	#teste3AfdGr.teste3()
 	#teste4GrAfnd.teste4()
-	#teste5GLCFirstFollowTabPred.teste5()
+	teste5GLCFirstFollowTabPred.teste5()
 	#teste6minAf.teste6()
 	#teste7checkAf.teste7()
-	teste8GLCelimEp.teste8()
-	teste9GLCChomsky.teste9()
+	#teste8GLCelimEp.teste8()
+	#teste9GLCChomsky.teste9()
 
 if __name__ == "__main__":
 	main_teste()

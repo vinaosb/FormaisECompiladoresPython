@@ -34,3 +34,4 @@ def teste5():
 	print("Follow : ")
 	print(gr.printFollow())
 	print(gr.printTabelaPreditiva())
+	#print(gr.calcAceitacao(""))

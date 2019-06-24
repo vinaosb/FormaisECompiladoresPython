@@ -4,6 +4,7 @@
 ##
 
 
+from src import automato_pilha
 
 class GramaticaLivreContexto:
 	firsts = dict()
@@ -114,7 +115,7 @@ class GramaticaLivreContexto:
 			self.calcFollows()
 		for nt in self.naoTerminal:
 			self.preditiveTable[nt] = dict()
-			for t in self.terminal:
+			for t in self.terminal.union({"$"}):
 				self.preditiveTable[nt][t] = set()
 		for simb in self.naoTerminal:
 			for prod in self.regrasProd[simb]:
@@ -125,6 +126,9 @@ class GramaticaLivreContexto:
 						if t == '&':
 							for tt in self.follows[prod[0]]:
 								self.preditiveTable[simb][tt].add(prod)
+	
+	def calcAceitacao(self, expr):
+		return self.convertToAP().check(expr)
 
 	# Chomsky usa Z como estado inicial
 	def Chomsky(self):
@@ -263,7 +267,6 @@ class GramaticaLivreContexto:
 					ret.add(nt)
 		return ret
 
-
 	def remEpsulonProducoes(self):
 		novo = GramaticaLivreContexto("temporario")
 		novo.terminal = self.terminal
@@ -338,31 +341,44 @@ class GramaticaLivreContexto:
 
 	def Fatoracao(self):
 		added = True
+		aux = dict()
+		aux2 = dict()
+		aux3 = set() # Nao Terminais a adicionar
 		while(added):
+			aux.clear() # Producoes a adicionar
+			aux2.clear() # Producoes a remover
 			added = False
-			aux = dict()
-			aux2 = dict()
+			j = 0
 			for nt in self.naoTerminal:
 				aux[nt] = set()
 				aux2[nt] = set()
 				for prod1 in self.regrasProd[nt]:
 					for prod2 in self.regrasProd[nt]:
 						if prod1 != prod2:
-							if prod1[0] == prod2[0] and prod1 not in aux2[nt]:
+							k = -1
+							for i in range(0, min(len(prod1),len(prod2))):
+								if prod1[i] != prod2[i]:
+									break
+								k=i
+							if k >= 0:
+								novo = self.genNewSimb(j)
+								j+=1
+								aux[nt].add(prod1[0:k] + novo)
 								aux2[nt].add(prod1)
 								aux2[nt].add(prod2)
-								novo = self.genNewSimb()
-								aux[nt].add(prod1[0] + novo)
-								self.addNaoTerminal(novo)
-								self.addProducao(novo,prod1[1:])
-								self.addProducao(novo,prod2[1:])
-								added = True
-				for e in aux[nt]:
-					self.regrasProd[nt].remove(e)
-				for e in aux2[nt]:
-					self.regrasProd[nt].add(e)
-				aux[nt].clear()
-				aux2[nt].clear()
+								aux3.add(novo)
+								aux[novo] = set()
+								aux[novo].add(prod1[k+1:])
+								aux[novo].add(prod2[k+1:])
+			for nt in aux3:
+				if nt not in self.naoTerminal:
+					self.addNaoTerminal(nt)
+			for nt,prods in aux.items():
+				for prod in prods:
+					self.addProducao(nt,prod)
+			for nt,prods in aux2.items():
+				for prod in prods:
+					self.remProducao(nt,prod)
 
 	# Gera um novo simbolo para gramatica (função auxiliar)
 	def genNewSimb(self, j = 0):
@@ -408,15 +424,28 @@ class GramaticaLivreContexto:
 		self.calcPred()
 		saida = 'Tabela Preditiva: \n'
 		saida = saida + '\t'
-		for t in self.terminal:
+		for t in self.terminal.union({"$"}):
 			saida = saida + t + '\t\t\t'
 		saida = saida + '\n'
 
 		for nt in self.naoTerminal:
 			saida = saida + nt + '\t'
-			for t in self.terminal:
+			for t in self.terminal.union({"$"}):
 				for pt in self.preditiveTable[nt][t]:
 					saida = saida + pt + ' '
 				saida = saida + '\t\t\t'
 			saida = saida + '\n'
 		return saida
+
+	def convertToAP(self):
+		ap = automato_pilha.AutomatoPilha(self.nome + "1")
+		self.calcPred()
+
+		for nt in self.naoTerminal:
+			ap.addAlfaPilha(nt)
+			for t in self.terminal:
+				ap.addAlfaEntr(t)
+				ap.addAlfaPilha(t)
+				ap.addEstado()
+		return ap
+		

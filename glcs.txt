@@ -1,4 +1,0 @@
-S-> ASB
-A-> Aa | &
-B-> Bb | &
-set()set(){}
