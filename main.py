@@ -10,20 +10,21 @@ from testes import teste1AfndEpsulonAfd
 from testes import teste2AfndAfd
 from testes import teste3AfdGr
 from testes import teste4GrAfnd
-from testes import teste5GLCFirstFollow
+from testes import teste5GLCFirstFollowTabPred
 from testes import teste6minAf
-from testes import teste7checkAf
-
+from testes import teste7checkAF
+from testes import teste8GLCelimEp
 
 
 def main_teste():
-	teste1AfndEpsulonAfd.teste1()
-	teste2AfndAfd.teste2()
-	teste3AfdGr.teste3()
-	teste4GrAfnd.teste4()
-	teste5GLCFirstFollowTabPred.teste5()
-	teste6minAf.teste6()
-	teste7checkAf.teste7()
+	#teste1AfndEpsulonAfd.teste1()
+	#teste2AfndAfd.teste2()
+	#teste3AfdGr.teste3()
+	#teste4GrAfnd.teste4()
+	#teste5GLCFirstFollowTabPred.teste5()
+	#teste6minAf.teste6()
+	#teste7checkAf.teste7()
+	teste8GLCelimEp.teste8()
 
 if __name__ == "__main__":
 	main_teste()
