@@ -36,8 +36,7 @@ def entryAF(length, width):
 
     entryWin = sg.Window("Input AF").Layout(entryLayout)
     button, values = entryWin.Read()
-    ##TODO format values in AF
-    print(','.join(values))
+    return values
 
 
 
@@ -53,12 +52,13 @@ tab2_layout = [ [sg.T('Carregar ER, AF, GR, GLC')],
               [sg.T('Salvar ER, AF, GR, GLC')],
               [sg.Button('Save')] ]
 
-tab3_layout = [ [sg.T('select ER, AF, GR, GLC')],
-              [ ],  #_selER_ _selGR_ _selAF_ _selGLC_
-              [sg.T('Converter GR <-> AF')],
-              [sg.Button('ConvGR-AF')],
+tab3_layout = [ [sg.T('select ER, GR, GLC')],
+              [sg.Spin([i for i in range(0, lener )], initial_value=0, key='_selER_'), sg.Spin([i for i in range(0, lengr )], initial_value=0, key='_selGR_'), sg.Spin([i for i in range(0, lenglc )], initial_value=0, key='_selGLC_'), sg.Button('Edit') ],
+              [ ],  #_selER_ _selGR_ _selAF_ _uniAF_ _selGLC_
+              [sg.T('Converter GR <-> AF'), sg.Button('ConvGR-AF')],
               [ ],
-              [sg.Spin([i for i in range(1, 2 )], initial_value=1, key='_selAF_'), sg.Text('select AF')],
+              [sg.T('*** Segundo AF da tupla a seguir usado nos metodos de uniao e intersecao') ],
+              [sg.Spin([i for i in range(0,  )], initial_value=0, key='_selAF_'), sg.Spin([i for i in range(0,  )], initial_value=0, key='_uniAF_'), sg.Text('Tupla  AF | AF ')  ],
               [sg.T('Converter AF <-> GR'), sg.Button('ConvAF-GR')],
               [sg.T('Converter AFND <-> AFD'), sg.Button('ConvAFND-AFD')],
               [sg.T('Minimizar AF'), sg.Button('minAF')],
@@ -99,6 +99,13 @@ while True:
     elif event == 'Sobre...':
         sg.Popup('Segunda entrega  AF ER GR - 2019.1 - ')
         continue
+    elif event == 'Edit':
+        #_selER_ _selGR_ _selAF_ _uniAF_ _selGLC_
+        ui.update()
+        ui.Element('_ER_').Update( (expressoes)[ int(values['_selER_']) ])
+        ui.Element('_GR_').Update( (gramaticas)[ int(values['_selGR_']) ])
+        ui.Element('_GLC_').Update( (gramLC)[ int(values['_selGLC_']) ])
+        continue
     elif event == 'Open':
         ##
         expressoes = cr.load_expressoes()
@@ -107,8 +114,8 @@ while True:
         automatos  = cr.load_automatos()
         print( (cr.load_expressoes) )
         ui.Element('_ER_').Update( (expressoes)[0] )
-        ui.Element('_GR_').Update( (gramaticas)[1].print() )
-        ui.Element('_GLC_').Update((gramLC)[2].print() )
+        ui.Element('_GR_').Update( (gramaticas)[0].print() )
+        ui.Element('_GLC_').Update((gramLC)[0].print() )
         continue
     elif event == 'Save':
         ##
@@ -134,10 +141,9 @@ while True:
        gramLC.append(gra)
        continue
     elif event == 'submitA':
-       entryAF( int(values['inCOL']), int(values['inROW']))
-      ## sg.Column(columm_layout, size=(604,212),  key='_AF_', scrollable=True)
-      ##
-      # ##Table(  values,
+       tab = entryAF( int(values['inCOL']), int(values['inROW']))
+       Table(  tab )
+
       #   headings=None,
       #   visible_column_map=None,
       #   col_widths=None,
@@ -146,12 +152,8 @@ while True:
       #   max_col_width=20,
       #   select_mode=None,
       #   display_row_numbers=False,
-      #   num_rows=None,
       #   row_height=None,
       #   font=None,
-      #   justification='right',
-      #   text_color=None,
-      #   background_color=None,
       #   alternating_row_color=None,
       #   row_colors=None,
       #   vertical_scroll_only=True,
@@ -169,36 +171,36 @@ while True:
        continue
     elif event == 'ConvGR-AF':
        ##
-       af = gramaticas[ values['_selGR_'] ].to_afnd()
+       af = gramaticas[int(values['_selGR_'])].to_afnd()
        automatos.append(af)
        continue
     elif event == 'ConvAF-GR':
        ##
-       g = automatos[values['_selAF_']].to_gr()
+       g = automatos[int(values['_selAF_'])].to_gr()
        gramaticas.append(g)
        continue
     elif event == 'ConvAFND-AFD':
        ##
-       af = automatos[values['_selAF_']].to_afd()
+       af = automatos[int(values['_selAF_'])].to_afd()
        automatos.append(af)
        continue
     elif event == 'minAF':
        ##
-       automatos[values['_selAF_']].minimizar()
+       automatos[int(values['_selAF_'])].minimizar()
        continue
     elif event == 'checkAF':
        ##
-       automatos[values['_selAF_']].checkAF( values['_sentenca_'] )
+       automatos[int(values['_selAF_'])].checkAF( values['_sentenca_'] )
        continue
     elif event == 'interAF':
        ##
-       af0 = automatos[values['_selAF_']]
-       af1 = automatos[values['_intersecAF_']]
-       automatos[values['_selAF_']] = af0.intersecao(af1)
+       af0 = automatos[int(values['_selAF_'])]
+       af1 = automatos[int(values['_uniAF_'])]
+       af0 = af0.intersecao(af1)
        continue
     elif event == 'uniaoAF':
        ##
-       af0 = automatos[values['_selAF_']]
-       af1 = automatos[values['_uniAF_']]
-       automatos[values['_selAF_']] = af0.uniao(af1)
+       af0 = automatos[int(values['_selAF_'])]
+       af1 = automatos[int(values['_uniAF_'])]
+       af0 = af0.uniao(af1)
        continue
