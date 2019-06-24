@@ -211,26 +211,29 @@ class GramaticaLivreContexto:
 		novo = GramaticaLivreContexto("temporario")
 		novo.terminal = self.terminal
 		conjE = self.idProducaoComEpsulon()
-		novo.naoTerminal = self.naoTerminal
 
-		for nt in novo.naoTerminal:
+		for nt in self.naoTerminal:
+			novo.addNaoTerminal(nt)
 			for prod in self.regrasProd[nt]:
-				if prod != '&':
+				if prod != "&":
 					novo.addProducao(nt,prod)
 		
 		adc = True
 		while(adc):
 			adc = False
 			for nt in novo.naoTerminal:
+				aux2 = set()
 				for prod in novo.regrasProd[nt]:
-					if len(prod > 1):
+					if len(prod) > 1:
 						for i in range(0,len(prod)):
 							if prod[i] in conjE:
 								aux = prod[:i]
 								aux = prod[i+1:]
 								if aux not in novo.regrasProd[nt]:
-									novo.addProducao(nt,aux)
+									aux2.add(aux)
 									adc = True
+				for added in aux2:
+					novo.addProducao(nt,added)
 		
 		if self.inicial in conjE:
 			novoInicial = novo.genNewSimb()
