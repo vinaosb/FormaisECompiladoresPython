@@ -161,37 +161,38 @@ class GramaticaLivreContexto:
 			else:
 				newRegrasProd[nt] = self.regrasProd[nt]
 			
-		self.regrasProd = newRegrasProd
+		self.regrasProd = newRegrasProd.copy()
 
-		# Elimina producoes com mais de 2 nao terminais | A -> BCD = A ->BC & C -> DE
+		# Elimina producoes com mais de 2 nao terminais | A -> BCD = A ->BE & E -> CD
 		newRegrasProd.clear()
-		for nt in self.naoTerminal:
-			newRegrasProd[nt] = set()
 
-			if nt not in aux:
+		newNaoTerminais = set()
+		added = True
+		while(added):
+			added = False
+			i = 0
+			for nt in self.naoTerminal:
+				newNaoTerminais.add(nt)
+				newRegrasProd[nt] = set()
 				for prod in self.regrasProd[nt]:
-					newprod = ""
-					if (len(prod) <= 2):
-						newprod += prod
-						newRegrasProd[nt].add(newprod)
-					else:
-						temp = ""
-						temp2 = nt
-						for i in range(0,len(prod)):
-							if i != len(prod)-2:
-								temp = self.genNewSimb()
-							else:
-								temp = prod[i+1]
-							newprod += prod[i]
-							newprod += temp
-							if temp not in self.naoTerminal:
-								self.addNaoTerminal(temp)
-							newRegrasProd[temp2].add(newprod)
-							temp2 = temp
-			else:
-				newRegrasProd[nt] = self.regrasProd[nt]
+					if (len(prod) < 3 and len(prod) > 0):
+						newRegrasProd[nt].add(prod)
+					elif len(prod) > 0:
+						aux = self.genNewSimb(i)
+						i += 1
+						added = True
+						newRegrasProd[nt].add(prod[0] + aux)
+						newNaoTerminais.add(aux)
+						newRegrasProd[aux] = set()
+						newRegrasProd[aux].add(prod[1:])
 
-		self.regrasProd = newRegrasProd
+			for nnt in newNaoTerminais:
+				if nnt not in self.naoTerminal:
+					self.addNaoTerminal(nnt)
+			newNaoTerminais.clear()
+			self.regrasProd = newRegrasProd.copy()
+			newRegrasProd.clear()
+
 
 		# Remove & producoes
 		self.remEpsulonProducoes()
@@ -206,7 +207,41 @@ class GramaticaLivreContexto:
 			else:
 				newRegrasProd[nt] = self.regrasProd[nt]
 
-		self.regrasProd = newRegrasProd
+		self.regrasProd = newRegrasProd.copy()
+
+		newRegrasProd.clear()
+
+		# Remove Nao terminais Equivalentes (iguais)
+		remv = True
+		while(remv):
+			remv = False
+			aux = set()
+			for nt in self.naoTerminal:
+				for ntt in self.naoTerminal:
+					if nt != ntt and self.regrasProd[nt].issubset(self.regrasProd[ntt]) and self.regrasProd[ntt].issubset(self.regrasProd[nt]) and ntt+nt not in aux and nt+ntt not in aux:
+						aux.add(ntt + nt)
+			aux2 = dict()
+			for a in aux:
+				for nt in self.naoTerminal:
+					aux2[nt] = dict()
+					if nt != a[1]:
+						for prod in self.regrasProd[nt]:
+							if a[0] in prod:
+								for i in range(0,len(prod)):
+									if a[0] == prod[i]:
+										aux2[nt][prod] = a[0] + prod[:i] + a[1] + prod[i+1:]
+			nextDel = set()
+			for nt in self.naoTerminal:
+				for prod, res in aux2[nt].items():
+					self.regrasProd[nt].remove(prod)
+					self.regrasProd[nt].add(res[1:])
+					nextDel.add(res[0])
+			if len(nextDel) > 0:
+				remv = True
+			for nd in nextDel:
+				self.regrasProd.pop(nd)
+				self.naoTerminal.remove(nd)
+
 
 	def remEpsulonProducoes(self):
 		novo = GramaticaLivreContexto("temporario")
@@ -269,12 +304,15 @@ class GramaticaLivreContexto:
 
 	def addProdUni(self, nt):
 		newRegrasProd = set()
-		for prod in self.regrasProd[nt]:
-			if (len(prod) == 1):
-				for n in addProdUni(prod):
-					newRegrasProd.add(n)
-			else:
-				newRegrasProd.add(prod)
+		if nt in self.terminal:
+			newRegrasProd.add(nt)
+		else:
+			for prod in self.regrasProd[nt]:
+				if (len(prod) == 1):
+					for n in self.addProdUni(prod):
+						newRegrasProd.add(n)
+				else:
+					newRegrasProd.add(prod)
 		return newRegrasProd
 
 	def Fatoracao(self):
@@ -306,16 +344,22 @@ class GramaticaLivreContexto:
 				aux2[nt].clear()
 
 	# Gera um novo simbolo para gramatica (função auxiliar)
-	def genNewSimb(self):
+	def genNewSimb(self, j = 0):
 		temp = "A"
-		for i in range(0,25):
+		for i in range(j,25):
 			if chr(ord(temp)+ i) not in self.naoTerminal and chr(ord(temp)+ i) not in self.terminal:
 				return chr(ord(temp)+ i)
 		temp = "a"
-		for i in range(0,26):
+		k = j - 24
+		if k < 0:
+			k = 0
+		for i in range(k,26):
 			if chr(ord(temp)+ i) not in self.naoTerminal and chr(ord(temp)+ i) not in self.terminal:
 				return chr(ord(temp)+ i)
-		for i in range(0,10):
+		l = k - 25
+		if l < 0:
+			l = 0
+		for i in range(l,10):
 			if str(i) not in self.naoTerminal and str(i) not in self.terminal:
 				return str(i)
 
