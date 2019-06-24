@@ -31,10 +31,10 @@ def teste8():
 
         print(gr.print())
         print(":Elim & prod:::: ")
-        gr.delEpsilonProd()
+        gr.remEpsulonProducoes()
         print("result: ")
         print(gr.print())
 
         print("again : ")
-        gr.delEpsilonProd()
+        gr.remEpsulonProducoes()
         print(gr.print())
